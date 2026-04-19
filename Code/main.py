@@ -7,8 +7,6 @@ from funcoes import listar_tarefas
 from funcoes import adicionar_tarefa
 from funcoes import limpar_tela
 from funcoes import concluir_tarefa
-from funcoes import lista_tarefas
-from funcoes import TEMPO
 
 
 while True:
@@ -35,17 +33,7 @@ while True:
         
         case "3":
             limpar_tela()
-            try:
-                if not lista_tarefas:
-                    print("Não há tarefas para concluir.")
-                    time.sleep(1)
-                else:
-                    listar_tarefas()
-                    indice = int(input("Digite o número da tarefa que deseja concluir: "))
-                    concluir_tarefa(indice)
-            except ValueError:
-                print("Por favor, digite um número válido.")
-                time.sleep(TEMPO)
+            concluir_tarefa()
         
         case "0":
             limpar_tela()

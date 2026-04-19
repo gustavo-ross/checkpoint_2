@@ -1,25 +1,53 @@
 import time
+import json
 import os
 
-lista_tarefas = []
 TEMPO = 1
 
+#Função que permiti o usuário segui no momento que achar melhor, precionando enter:
 def enter_time():
     enter = input("Precione [ENTER] para continuar.\n")
 
 
+#Função para limpar tela:
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+#Função para adicionar tarefas no banco de dados:
 def adicionar_tarefa(descricao):
-    lista_tarefas.append({'descricao': descricao, 'concluida': False})
+    caminho_arquivo = "Code/tasks.json"
+    lista_tarefas = []
+
+    if os.path.exists(caminho_arquivo):
+        try:
+            with open(caminho_arquivo, "r") as arquivo:
+                lista_tarefas = json.load(arquivo)
+        except json.JSONDecodeError:
+            lista_tarefas = []
+
+    nova_tarefa = {'descricao': descricao, 'concluida': False}
+    lista_tarefas.append(nova_tarefa)
+
+    with open(caminho_arquivo, "w") as arquivo:
+        json.dump(lista_tarefas, arquivo, indent=4)
+    
     print("Tarefa adicionada com sucesso!")
     time.sleep(TEMPO)
 
 
+#Função para listar as tarefas do banco de dados:
 def listar_tarefas():
     num = 1
+    caminho_arquivo = "Code/tasks.json"
+    lista_tarefas = []
+
+    if os.path.exists(caminho_arquivo):
+        try:
+            with open(caminho_arquivo, "r") as arquivo:
+                lista_tarefas = json.load(arquivo)
+        except json.JSONDecodeError:
+            lista_tarefas = []
 
     print("--- LISTA DE TAREFAS SALVAS ---")
     print(f"Tarefas salvas: {len(lista_tarefas)}")
@@ -36,14 +64,52 @@ def listar_tarefas():
         num += 1
 
 
-def concluir_tarefa(indice):
+#Função para iniciar a conclusão de tarefa:
+def concluir_tarefa():
+    caminho_arquivo = "Code/tasks.json"
+    lista_tarefas = []
+
+    if os.path.exists(caminho_arquivo):
+        try:
+            with open(caminho_arquivo, "r") as arquivo:
+                lista_tarefas = json.load(arquivo)
+        except json.JSONDecodeError:
+            lista_tarefas = []
+
+    try:
+        if not lista_tarefas:
+            print("Não há tarefas para concluir.")
+            time.sleep(1)
+        else:
+            listar_tarefas()
+            indice = int(input("Digite o número da tarefa que deseja concluir: "))
+            concluir_tarefa_status(indice)
+    except ValueError:
+            print("Por favor, digite um número válido.")
+            time.sleep(TEMPO)
+
+
+#Função para alterar o status da tarefa para Concluído:
+def concluir_tarefa_status(indice):
     limpar_tela()
     
+    caminho_arquivo = "Code/tasks.json"
+    lista_tarefas = []
+
+    if os.path.exists(caminho_arquivo):
+        try:
+            with open(caminho_arquivo, "r") as arquivo:
+                lista_tarefas = json.load(arquivo)
+        except json.JSONDecodeError:
+            lista_tarefas = []
+        
     if 1 <= indice <= len(lista_tarefas):
         lista_tarefas[indice - 1]['concluida'] = True
+        with open(caminho_arquivo, "w") as arquivo:
+            json.dump(lista_tarefas, arquivo, indent=4)
         print(f"Tarefa {indice} concluída com sucesso!")
     else:
         print(f"Erro: A tarefa número {indice} não existe.")
-    
+        
     time.sleep(TEMPO)
     
