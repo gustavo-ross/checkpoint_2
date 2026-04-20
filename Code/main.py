@@ -7,23 +7,21 @@ from funcoes import listar_tarefas
 from funcoes import adicionar_tarefa
 from funcoes import limpar_tela
 from funcoes import concluir_tarefa
+from funcoes import excluir_tarefa
+from funcoes import menu_inicial
 
 
 while True:
     limpar_tela()
-    print("--- TO-DO LIST ---")
-    print("Selecione uma das opções abaixo.\n")
-    print("1 - Adicionar tarefa")
-    print("2 - Listar tarefas")
-    print("3 - Concluir tarefa")
-    print("0 - Sair\n")
+    menu_inicial()
 
     opcao = input("Digite a opção: ")
 
     match opcao:
         case "1":
             limpar_tela()
-            descricao = input("Digite a descrição da tarefa:\n")
+            print(">>> [ ADICIONAR TAREFA ] <<<")
+            descricao = input("Digite a descrição da tarefa:\n--> ")
             adicionar_tarefa(descricao)
 
         case "2":
@@ -34,6 +32,10 @@ while True:
         case "3":
             limpar_tela()
             concluir_tarefa()
+
+        case "4":
+            limpar_tela()
+            excluir_tarefa()
         
         case "0":
             limpar_tela()
@@ -42,5 +44,11 @@ while True:
         
         case _:
             limpar_tela()
-            print("ERRO: Opção inválida.")
+            print("\n\n")
+            print("  ========================================")
+            print("     Obrigado por usar o TO-DO LIST!")
+            print("     Finalizando o sistema... Até logo.")
+            print("  ========================================")
+            print("\n\n")
+            break
 

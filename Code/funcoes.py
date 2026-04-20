@@ -14,6 +14,29 @@ def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def menu_inicial():
+    MENU_ASCII = """
+========================================
+  _______  ____         _____   ____  
+ |__   __|/ __ \       |  __ \ / __ \ 
+    | |  | |  | | ____ | |  | | |  | |
+    | |  | |  | ||____|| |  | | |  | |
+    | |  | |__| |      | |__| | |__| |
+    |_|   \____/       |_____/ \____/
+
+          [ TO-DO LIST v1.0 ]
+========================================
+    """
+    print(MENU_ASCII)
+
+    print(" [1] Adicionar nova tarefa")
+    print(" [2] Listar todas as tarefas")
+    print(" [3] Marcar tarefa como concluída")
+    print(" [4] Excluir uma tarefa")
+    print("----------------------------------------")
+    print(" [0] Sair do sistema")
+    print("========================================\n\n")
+
 #Função para adicionar tarefas no banco de dados:
 def adicionar_tarefa(descricao):
     caminho_arquivo = "Code/tasks.json"
@@ -49,17 +72,17 @@ def listar_tarefas():
         except json.JSONDecodeError:
             lista_tarefas = []
 
-    print("--- LISTA DE TAREFAS SALVAS ---")
-    print(f"Tarefas salvas: {len(lista_tarefas)}")
-    print("\n------------------------------------------------------------------------\n")
+    print(">>> [LISTA DE TAREFAS SALVAS] <<<")
+    print(f"*** Tarefas salvas: {len(lista_tarefas)} ***")
+    print("\n========================================\n")
 
     for item in lista_tarefas:
-        print(f"TAREFA {num}: {item['descricao']}")
+        print(f"> TAREFA {num}: {item['descricao']}")
         if item['concluida'] == False:
-            print("STATUS: 🔶 Em andamento")
+            print("> STATUS: 🔶 Em andamento")
         else:
-            print("STATUS: 🟩 Concluída")
-        print("\n------------------------------------------------------------------------\n")
+            print("> STATUS: 🟩 Concluída")
+        print("\n========================================\n")
 
         num += 1
 
@@ -83,16 +106,23 @@ def concluir_tarefa():
         else:
             listar_tarefas()
             indice = int(input("Digite o número da tarefa que deseja concluir: "))
-            concluir_tarefa_status(indice)
+            
+            if 1 <= indice <= len(lista_tarefas):
+                lista_tarefas[indice - 1]['concluida'] = True
+                with open(caminho_arquivo, "w") as arquivo:
+                    json.dump(lista_tarefas, arquivo, indent=4)
+                print(f"Tarefa {indice} concluída com sucesso!")
+                time.sleep(TEMPO)
+            else:
+                print(f"Erro: A tarefa número {indice} não existe.")
+                time.sleep(TEMPO)
+
     except ValueError:
             print("Por favor, digite um número válido.")
             time.sleep(TEMPO)
-
-
-#Função para alterar o status da tarefa para Concluído:
-def concluir_tarefa_status(indice):
-    limpar_tela()
     
+
+def excluir_tarefa():
     caminho_arquivo = "Code/tasks.json"
     lista_tarefas = []
 
@@ -102,14 +132,24 @@ def concluir_tarefa_status(indice):
                 lista_tarefas = json.load(arquivo)
         except json.JSONDecodeError:
             lista_tarefas = []
-        
+
+    try:
+        if not lista_tarefas:
+            print("Não há tarefas para concluir.")
+            time.sleep(1)
+        else:
+            listar_tarefas()
+            indice = int(input("Digite o número da tarefa que deseja concluir: "))
+    except ValueError:
+            print("Por favor, digite um número válido.")
+            time.sleep(TEMPO)
+
     if 1 <= indice <= len(lista_tarefas):
-        lista_tarefas[indice - 1]['concluida'] = True
+        lista_tarefas.pop(indice - 1)
         with open(caminho_arquivo, "w") as arquivo:
             json.dump(lista_tarefas, arquivo, indent=4)
-        print(f"Tarefa {indice} concluída com sucesso!")
+        print(f"Tarefa {indice} excluída com sucesso!")
     else:
         print(f"Erro: A tarefa número {indice} não existe.")
         
     time.sleep(TEMPO)
-    
