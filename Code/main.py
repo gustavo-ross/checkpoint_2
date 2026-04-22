@@ -29,11 +29,6 @@ while True:
         
         case "0":
             limpar_tela()
-            print("Finalizando TO-DO LIST...")
-            break
-        
-        case _:
-            limpar_tela()
             print("\n\n")
             print("  ========================================")
             print("     Obrigado por usar o TO-DO LIST!")
@@ -41,4 +36,14 @@ while True:
             print("  ========================================")
             print("\n\n")
             break
+        
+        case _:
+            limpar_tela()
+            print("\n\n")
+            print("  ========================================")
+            print("         ERRO:")
+            print("         Digite um valor válido.")
+            print("  ========================================")
+            print("\n\n")
+            enter_time()
 

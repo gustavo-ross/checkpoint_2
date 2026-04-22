@@ -102,7 +102,7 @@ def concluir_tarefa():
     try:
         if not lista_tarefas:
             print("Não há tarefas para concluir.")
-            time.sleep(1)
+            time.sleep(TEMPO)
         else:
             listar_tarefas()
             indice = int(input("Digite o número da tarefa que deseja concluir: "))
@@ -135,21 +135,24 @@ def excluir_tarefa():
 
     try:
         if not lista_tarefas:
-            print("Não há tarefas para concluir.")
-            time.sleep(1)
+            print("Não há tarefas para excluír.")
+            time.sleep(TEMPO)
         else:
             listar_tarefas()
-            indice = int(input("Digite o número da tarefa que deseja concluir: "))
+            indice = int(input("Digite o número da tarefa que deseja excluir: "))
+
+            if 1 <= indice <= len(lista_tarefas):
+                lista_tarefas.pop(indice - 1)
+                with open(caminho_arquivo, "w") as arquivo:
+                    json.dump(lista_tarefas, arquivo, indent=4)
+                    print(f"Tarefa {indice} excluída com sucesso!")
+                    time.sleep(TEMPO)
+            else:
+                print(f"Erro: A tarefa número {indice} não existe.")
+                time.sleep(TEMPO)
+
     except ValueError:
             print("Por favor, digite um número válido.")
             time.sleep(TEMPO)
-
-    if 1 <= indice <= len(lista_tarefas):
-        lista_tarefas.pop(indice - 1)
-        with open(caminho_arquivo, "w") as arquivo:
-            json.dump(lista_tarefas, arquivo, indent=4)
-        print(f"Tarefa {indice} excluída com sucesso!")
-    else:
-        print(f"Erro: A tarefa número {indice} não existe.")
         
-    time.sleep(TEMPO)
+    
