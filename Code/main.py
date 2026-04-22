@@ -1,14 +1,4 @@
-import json
-import time
-import os
-
-from funcoes import enter_time
-from funcoes import listar_tarefas
-from funcoes import adicionar_tarefa
-from funcoes import limpar_tela
-from funcoes import concluir_tarefa
-from funcoes import excluir_tarefa
-from funcoes import menu_inicial
+from funcoes import enter_time, listar_tarefas, adicionar_tarefa, limpar_tela, concluir_tarefa, excluir_tarefa, menu_inicial
 
 
 while True:
